@@ -76,7 +76,7 @@ const Contact = () => {
               type="email"
               name="email"
               required
-              className="w-full border-2 border-gray-300 rounded-md p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400 transition duration-300"
+              className="w-full border-2 border-gray-300 rounded-md p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400 transition duration-300 text-black"
             />
           </div>
 
