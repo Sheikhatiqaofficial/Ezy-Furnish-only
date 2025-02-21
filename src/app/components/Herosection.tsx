@@ -19,7 +19,7 @@ const Herosection = () => {
               </p>
 
               <div className="flex justify-center md:justify-start mt-[40px] md:mt-[50px]">
-                <Link href="/link">
+                <Link href="/products">
                   <button className="bg-[#F9F9F926] text-white text-[16px] font-medium py-[18px] px-[20px] w-full md:w-[200px] h-[66px] hover:bg-[#F9F9F950]">
                     View collection
                   </button>
