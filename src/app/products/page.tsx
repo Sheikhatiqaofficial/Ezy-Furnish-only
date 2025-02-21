@@ -89,7 +89,7 @@ const ProductsPage = () => {
 
             <Category />
 
-            {/* Product Images */}
+            {/* Product Images
             <div className="flex flex-wrap justify-between gap-[16px] sm:gap-[24px] mt-[52px] mx-[20px] sm:mx-[70px] lg:gap-[0px]">
               {filteredData.length > 0 ? (
                 filteredData.map((product) => (
@@ -99,10 +99,9 @@ const ProductsPage = () => {
                   >
                     <Link href={`/products/${product.slug.current}`}>
                     <div className="w-full h-[375px]">
-                      {/* Link to Product Detail Page */}
                      
                         <Image
-                          src={urlFor(product).toString()} // Use the URL builder for the image
+                          src={urlFor(product).toString()} 
                           alt={product.name}
                           width={305}
                           height={375}
@@ -122,7 +121,38 @@ const ProductsPage = () => {
               ) : (
                 <p>No products found matching your search.</p>
               )}
-            </div>
+            </div> */}
+{/* Product Images */}
+<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-[16px] sm:gap-[24px] mx-[20px] sm:mx-[70px]">
+  {filteredData.length > 0 ? (
+    filteredData.map((product) => (
+      <div
+        key={product._id}
+        className="w-full h-[462px] transform transition-transform hover:translate-y-[-10px]"
+      >
+        <Link href={`/products/${product.slug.current}`}>
+          <div className="w-full h-[375px]">
+            <Image
+              src={urlFor(product).toString()}
+              alt={product.name}
+              width={305}
+              height={375}
+              className="w-full h-full opacity-1 cursor-pointer"
+            />
+          </div>
+          <h4 className="text-[#2A254B] text-[20px] font-normal mt-[12px]">
+            {product.name}
+          </h4>
+          <p className="text-[#2A254B] text-[18px] font-normal mt-[15px]">
+            £{product.price}
+          </p>
+        </Link>
+      </div>
+    ))
+  ) : (
+    <p>No products found matching your search.</p>
+  )}
+</div>
 
             {/* View Collection Button */}
             <Link href="/link">
