@@ -1,12 +1,13 @@
-
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 const Topnav = () => {
   const [isSearchVisible, setIsSearchVisible] = useState(false); // State for search bar visibility
   const [searchQuery, setSearchQuery] = useState(""); // State to store the search query
+  const searchInputRef = useRef<HTMLInputElement>(null); // Reference for the input element
+  const searchContainerRef = useRef<HTMLDivElement>(null); // Reference for the search container
 
   // Toggle the visibility of the search input
   const toggleSearchBar = () => {
@@ -26,13 +27,31 @@ const Topnav = () => {
     }
   };
 
+  // Close the search bar when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setIsSearchVisible(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <nav className="relative w-full bg-white p-2">
       {/* Section 1 */}
       <div className="relative flex items-center justify-between">
-        {/* Magnifying Glass Icon */}
+        {/* Magnifying Glass Icon (only visible on larger screens) */}
         <div
-          className="absolute left-7 top-6 cursor-pointer hover:stroke-gray-400"
+          className="absolute left-7 top-6 cursor-pointer hover:stroke-gray-400 hidden sm:block"
           onClick={toggleSearchBar}
         >
           <svg
@@ -42,29 +61,35 @@ const Topnav = () => {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            className="stroke-[#2A254B] hover:stroke-gray-400 transition-all duration-200"
+            className="stroke-[#2A254B] left-2 hover:stroke-gray-400 transition-all duration-200"
           >
             <circle cx="10" cy="10" r="7" strokeWidth="2" />
             <line x1="16" y1="16" x2="22" y2="22" strokeWidth="2" />
           </svg>
         </div>
 
-        {/* Search Bar */}
+        {/* Search Bar (only visible on larger screens) */}
         {isSearchVisible && (
-          <div className="absolute left-16 top-3 flex">
+          <div
+            className="absolute mt-16 px-16"
+            ref={searchContainerRef} // Reference to detect clicks outside the search bar
+          >
             <input
+              ref={searchInputRef} // Reference for the input field
               type="text"
               value={searchQuery}
               onChange={handleSearchChange}
               placeholder="Search products..."
               className="p-2 pl-10 border border-gray-300 rounded-lg focus:outline-none"
-              onBlur={() => setIsSearchVisible(false)} // Hide the search bar when focus is lost
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleSearchSubmit(); // Trigger search on pressing "Enter"
               }}
             />
             <button
-              onClick={handleSearchSubmit}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent the search bar from closing when the button is clicked
+                handleSearchSubmit();
+              }}
               className="ml-2 px-4 py-2 bg-[#2A254B] text-white rounded-lg"
             >
               Search
@@ -99,12 +124,12 @@ const Topnav = () => {
         {/* User Avatar Icon */}
         <div className="absolute right-10 top-6 cursor-pointer hover:opacity-50 transition-all duration-200">
           <Link href={"/user"}>
-          <Image
-            src="/user.svg"
-            alt="User Avatar"
-            width={20}
-            height={20}
-          />
+            <Image
+              src="/user.svg"
+              alt="User Avatar"
+              width={20}
+              height={20}
+            />
           </Link>
         </div>
       </div>
